@@ -11,7 +11,7 @@ import '@shared/container';
 
 const app = express();
 app.use(express.json());
-app.use('/files', express.static(uploadconfig.directory));
+app.use('/files', express.static(uploadconfig.tmpFolder));
 app.use(routes);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
