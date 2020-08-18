@@ -1,10 +1,13 @@
-
-
+import {
+  createTestAccount,
+  createTransport,
+  Transporter,
+  getTestMessageUrl,
+} from 'nodemailer';
 import IMailProvider from '../models/IMailProvider';
-import { createTestAccount, createTransport, Transporter, getTestMessageUrl } from 'nodemailer';
 
 class EtherealMailProvider implements IMailProvider {
-  private client: Transporter
+  private client: Transporter;
 
   constructor() {
     createTestAccount().then(account => {
@@ -14,24 +17,26 @@ class EtherealMailProvider implements IMailProvider {
         secure: account.smtp.secure,
         auth: {
           user: account.user,
-          pass: account.pass
-        }
-      })
+          pass: account.pass,
+        },
+      });
 
-      this.client = transporter
-    })
+      this.client = transporter;
+    });
   }
 
   public async sendMail(to: string, body: string): Promise<void> {
-   const message = await this.client.sendMail({
+    const message = await this.client.sendMail({
       from: 'Equipe Gobarber <equipe@gobarber.com.br>',
       to,
       subject: 'Recuperação de senha',
       text: body,
-    })
+    });
 
+    // eslint-disable-next-line no-console
     console.log('Message sent: %s', message.messageId);
-    console.log('Preview URL: %s', getTestMessageUrl(message))
+    // eslint-disable-next-line no-console
+    console.log('Preview URL: %s', getTestMessageUrl(message));
   }
 }
 
